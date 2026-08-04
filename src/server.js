@@ -79,7 +79,7 @@ app.use('/admin', adminRouter);
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`NexChange.md запущен: http://localhost:${process.env.PORT || 3000}`);
+  console.log(`EXMONEY запущен: http://localhost:${process.env.PORT || 3000}`);
   console.log(`Админка: http://localhost:${process.env.PORT || 3000}/admin`);
 });
 

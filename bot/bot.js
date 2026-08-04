@@ -56,7 +56,7 @@ bot.start(async (ctx) => {
   }
 
   return ctx.reply(
-    'NexChange.md — обмен крипты и MDL в Кишинёве.\n\n' +
+    'EXMONEY — обмен крипты и MDL в Кишинёве.\n\n' +
       '/rates — текущее табло курсов\n' +
       '/exchange — оформить заявку на обмен\n' +
       '/alert — подписаться на уведомление о курсе\n' +
@@ -197,7 +197,7 @@ bot.catch((err, ctx) => {
 });
 
 bot.launch();
-console.log('NexChange.md bot запущен');
+console.log('EXMONEY bot запущен');
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

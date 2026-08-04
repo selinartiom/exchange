@@ -1,4 +1,4 @@
--- NexChange.md — схема PostgreSQL
+-- EXMONEY — схема PostgreSQL
 -- Применить: psql -U nexchange -d nexchange -f db/schema.sql
 -- Скрипт идемпотентный — можно запускать повторно на существующей БД.
 

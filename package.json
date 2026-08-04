@@ -1,7 +1,7 @@
 {
-  "name": "nexchange-md-platform",
+  "name": "exmoney-platform",
   "version": "0.1.0",
-  "description": "NexChange.md — сайт, API и админ-панель обменника",
+  "description": "EXMONEY — сайт, API и админ-панель обменника",
   "main": "src/server.js",
   "type": "commonjs",
   "scripts": {
