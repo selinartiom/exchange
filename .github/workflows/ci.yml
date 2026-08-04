@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Синтаксическая проверка всех .js файлов
+        run: |
+          for f in $(find src bot db scripts -name '*.js' -not -path '*/node_modules/*'); do
+            node --check "$f"
+          done
+
+      - name: Юнит-тесты (не требуют БД/сети — только чистая логика)
+        run: npm test

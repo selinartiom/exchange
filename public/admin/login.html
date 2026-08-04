@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход · NexChange.md Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#14161B;--panel:#1E222A;--bezel:#0C0D10;--line:#33384344;--amber:#FF9D2E;--ink:#ECE9E2;--ink-dim:#9A9DA6;--red:#F0605C;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:radial-gradient(1200px 600px at 50% -10%, #1c2029 0%, var(--bg) 60%);
+    color:var(--ink);font-family:'Inter',sans-serif;
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+  }
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:36px;width:100%;max-width:360px;box-shadow:0 30px 60px -20px #00000080;}
+  .logo{font-family:'Space Mono',monospace;font-weight:700;font-size:18px;margin-bottom:6px;}
+  .logo span{color:var(--amber);}
+  .sub{color:var(--ink-dim);font-size:13px;margin-bottom:28px;}
+  label{display:block;font-family:'Space Mono',monospace;font-size:11px;color:var(--ink-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+  input{width:100%;background:var(--bezel);border:1px solid var(--line);color:var(--ink);padding:12px;border-radius:8px;font-size:14px;margin-bottom:18px;}
+  input:focus{outline:1px solid var(--amber);}
+  button{width:100%;background:var(--amber);color:#1a1206;font-weight:700;font-size:14px;padding:12px;border:none;border-radius:8px;cursor:pointer;}
+  button:disabled{opacity:.6;cursor:not-allowed;}
+  .err{color:var(--red);font-size:13px;margin-top:14px;display:none;}
+</style>
+</head>
+<body>
+  <form class="card" id="loginForm">
+    <div class="logo">NEX<span>CHANGE</span>.MD</div>
+    <div class="sub">Панель администратора</div>
+    <label>Логин</label>
+    <input type="text" id="username" autocomplete="username" required>
+    <label>Пароль</label>
+    <input type="password" id="password" autocomplete="current-password" required>
+    <button type="submit" id="submitBtn">Войти</button>
+    <div class="err" id="err">Неверный логин или пароль</div>
+  </form>
+  <script>
+    const form = document.getElementById('loginForm');
+    const err = document.getElementById('err');
+    const btn = document.getElementById('submitBtn');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      err.style.display='none'; btn.disabled=true; btn.textContent='Входим…';
+      try{
+        const res = await fetch('/admin/login', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+          })
+        });
+        if(!res.ok) throw new Error();
+        window.location.href = '/admin';
+      }catch{
+        err.style.display='block';
+        btn.disabled=false; btn.textContent='Войти';
+      }
+    });
+  </script>
+</body>
+</html>

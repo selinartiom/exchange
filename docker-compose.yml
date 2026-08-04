@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nexchange}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?укажите POSTGRES_PASSWORD в .env}
+      POSTGRES_DB: ${POSTGRES_DB:-nexchange}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Официальный образ Postgres сам применяет *.sql из этой папки при
+      # ПЕРВОЙ инициализации пустого volume — схема накатится автоматически.
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-nexchange}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Внутри docker-сети БД доступна по имени сервиса "db", не localhost —
+      # этот DATABASE_URL перекрывает то, что может быть в .env (compose
+      # отдаёт приоритет явному environment: над env_file:).
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nexchange}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-nexchange}
+      TRUST_PROXY: 'true'
+    ports:
+      - '${PORT:-3000}:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ['node', 'src/server.js']
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nexchange}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-nexchange}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ['node', 'bot/bot.js']
+
+volumes:
+  pgdata:

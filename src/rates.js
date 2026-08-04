@@ -1,0 +1,115 @@
+const axios = require('axios');
+const { getSettings } = require('./db');
+
+const COINGECKO_IDS = {
+  BTC: 'bitcoin',
+  USDT: 'tether',
+  TON: 'the-open-network',
+};
+
+let cache = { at: 0, board: null };
+const CACHE_MS = 30_000; // не долбим внешние API чаще раза в 30 секунд
+
+async function getUsdToMdl() {
+  const { data } = await axios.get('https://api.exchangerate.host/latest', {
+    params: { base: 'USD', symbols: 'MDL' },
+    timeout: 8000,
+  });
+  const rate = data?.rates?.MDL;
+  if (!rate) throw new Error('Не удалось получить курс USD/MDL');
+  return rate;
+}
+
+async function getCryptoUsdPrices(symbols) {
+  const ids = symbols.map((s) => COINGECKO_IDS[s]).join(',');
+  const { data } = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
+    params: { ids, vs_currencies: 'usd' },
+    timeout: 8000,
+  });
+  const out = {};
+  for (const s of symbols) {
+    const id = COINGECKO_IDS[s];
+    if (!data[id]) throw new Error(`Нет цены для ${s}`);
+    out[s] = data[id].usd;
+  }
+  return out;
+}
+
+async function getBoardRates({ fresh = false } = {}) {
+  if (!fresh && cache.board && Date.now() - cache.at < CACHE_MS) {
+    return cache.board;
+  }
+
+  const margin = (await getSettings()).marginPercent / 100;
+  const [usdMdl, cryptoUsd] = await Promise.all([
+    getUsdToMdl(),
+    getCryptoUsdPrices(['BTC', 'USDT', 'TON']),
+  ]);
+
+  const board = { usdMdl, updatedAt: new Date().toISOString(), assets: {} };
+  for (const [symbol, usdPrice] of Object.entries(cryptoUsd)) {
+    const midMdl = usdPrice * usdMdl;
+    board.assets[symbol] = {
+      mid: midMdl,
+      buy: midMdl * (1 - margin),
+      sell: midMdl * (1 + margin),
+    };
+  }
+
+  cache = { at: Date.now(), board };
+  return board;
+}
+
+/**
+ * Чистая функция расчёта котировки по уже известному табло курсов —
+ * никакого I/O внутри, поэтому легко тестировать без БД и без сети
+ * (см. tests/rates.test.js). quote() ниже — тонкая обёртка, которая
+ * сначала получает актуальный board через getBoardRates(), а расчёт
+ * делегирует сюда.
+ */
+function quoteFromBoard(board, { fromAsset, toAsset, amount }) {
+  if (fromAsset === toAsset) throw new Error('Направления совпадают');
+  if (!(amount > 0)) throw new Error('Некорректная сумма');
+
+  const buyOf = (sym) => {
+    const r = board.assets[sym];
+    if (!r) throw new Error(`Неизвестный актив: ${sym}`);
+    return r.buy;
+  };
+  const sellOf = (sym) => {
+    const r = board.assets[sym];
+    if (!r) throw new Error(`Неизвестный актив: ${sym}`);
+    return r.sell;
+  };
+
+  let amountOut;
+  let rateUsed;
+  if (fromAsset === 'MDL') {
+    rateUsed = sellOf(toAsset);
+    amountOut = amount / rateUsed;
+  } else if (toAsset === 'MDL') {
+    rateUsed = buyOf(fromAsset);
+    amountOut = amount * rateUsed;
+  } else {
+    const amountInMdl = amount * buyOf(fromAsset);
+    rateUsed = sellOf(toAsset);
+    amountOut = amountInMdl / rateUsed;
+  }
+
+  const decimals = toAsset === 'MDL' ? 2 : 8;
+  return {
+    fromAsset,
+    toAsset,
+    amountIn: amount,
+    amountOut: +amountOut.toFixed(decimals),
+    rateUsed,
+    board,
+  };
+}
+
+async function quote({ fromAsset, toAsset, amount }) {
+  const board = await getBoardRates();
+  return quoteFromBoard(board, { fromAsset, toAsset, amount });
+}
+
+module.exports = { getBoardRates, quote, quoteFromBoard, COINGECKO_IDS };
