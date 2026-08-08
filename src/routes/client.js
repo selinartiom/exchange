@@ -1,56 +1,51 @@
 const express = require('express');
-const crypto = require('crypto');
 const { requireClient } = require('../middleware/clientAuth');
 const { requireCsrf } = require('../middleware/csrf');
 const { authLimiter } = require('../middleware/rateLimit');
 const { listOrders } = require('../db');
+const { verifyTelegramLogin, verifyTelegramWebAppInitData } = require('../telegramAuth');
 
 const router = express.Router();
 
-/**
- * Проверка данных Telegram Login Widget по алгоритму из документации Telegram:
- * https://core.telegram.org/widgets/login#checking-authorization
- * secret_key = SHA256(bot_token)
- * data_check_string = отсортированные "key=value" через \n (без hash)
- * hash должен совпадать с HMAC-SHA256(data_check_string, secret_key)
- */
-function verifyTelegramAuth(payload) {
-  const { hash, ...fields } = payload;
-  if (!hash) return false;
-
-  const dataCheckString = Object.keys(fields)
-    .sort()
-    .map((key) => `${key}=${fields[key]}`)
-    .join('\n');
-
-  const secretKey = crypto.createHash('sha256').update(process.env.BOT_TOKEN).digest();
-  const computedHash = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex');
-
-  if (computedHash !== hash) return false;
-
-  // Данные виджета старше суток — считаем протухшими
-  const authDate = parseInt(fields.auth_date, 10);
-  if (!authDate || Date.now() / 1000 - authDate > 86400) return false;
-
-  return true;
+function setClientSession(req, user) {
+  req.session.clientTelegramId = Number(user.id);
+  req.session.clientUsername = user.username || null;
+  req.session.clientFirstName = user.first_name || user.firstName || null;
 }
 
 router.post('/telegram', authLimiter, (req, res) => {
   if (!process.env.BOT_TOKEN) {
-    return res.status(500).json({ error: 'BOT_TOKEN не настроен на сервере' });
-  }
-  const payload = req.body || {};
-  if (!verifyTelegramAuth(payload)) {
-    return res.status(401).json({ error: 'Не удалось подтвердить вход через Telegram' });
+    return res.status(500).json({ error: 'BOT_TOKEN is not configured on the server' });
   }
 
-  req.session.clientTelegramId = Number(payload.id);
-  req.session.clientUsername = payload.username || null;
-  req.session.clientFirstName = payload.first_name || null;
+  const payload = req.body || {};
+  if (!verifyTelegramLogin(payload)) {
+    return res.status(401).json({ error: 'Could not verify Telegram login' });
+  }
+
+  setClientSession(req, payload);
 
   res.json({
     ok: true,
     user: { id: payload.id, username: payload.username, firstName: payload.first_name },
+  });
+});
+
+router.post('/telegram-webapp', authLimiter, (req, res) => {
+  if (!process.env.BOT_TOKEN) {
+    return res.status(500).json({ error: 'BOT_TOKEN is not configured on the server' });
+  }
+
+  const user = verifyTelegramWebAppInitData(req.body?.initData);
+  if (!user?.id) {
+    return res.status(401).json({ error: 'Could not verify Telegram Mini App' });
+  }
+
+  setClientSession(req, user);
+
+  res.json({
+    ok: true,
+    user: { id: user.id, username: user.username, firstName: user.first_name },
   });
 });
 

@@ -33,6 +33,7 @@ const ADMIN_IDS = (process.env.ADMIN_IDS || '')
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const stage = new Scenes.Stage([wizard, alertWizard]);
+const miniAppUrl = getMiniAppUrl();
 
 bot.use(session());
 bot.use(stage.middleware());
@@ -62,7 +63,7 @@ bot.start(async (ctx) => {
       '/alert — подписаться на уведомление о курсе\n' +
       '/myalerts — мои подписки на курс\n' +
       '/status <id> — статус заявки',
-    Markup.keyboard([['/rates', '/exchange']]).resize()
+    startKeyboard()
   );
 });
 
@@ -79,7 +80,13 @@ bot.command('rates', async (ctx) => {
   }
 });
 
-bot.command('exchange', (ctx) => ctx.scene.enter('exchange-wizard'));
+bot.command('exchange', (ctx) => {
+  if (!miniAppUrl) return ctx.scene.enter('exchange-wizard');
+  return ctx.reply(
+    'Open the EXMONEY Mini App to calculate and create an exchange request.',
+    Markup.inlineKeyboard([Markup.button.webApp('Open Mini App', miniAppUrl)])
+  );
+});
 bot.command('alert', (ctx) => ctx.scene.enter('alert-wizard'));
 
 bot.command('myalerts', async (ctx) => {
@@ -190,6 +197,20 @@ function statusLabel(status) {
       EXPIRED: 'просрочена (курс истёк)',
     }[status] || status
   );
+}
+
+function getMiniAppUrl() {
+  const baseUrl = process.env.MINI_APP_URL || process.env.PUBLIC_URL || process.env.APP_URL || '';
+  if (!baseUrl) return null;
+  return `${baseUrl.replace(/\/+$/, '')}/?tg=1`;
+}
+
+function startKeyboard() {
+  if (!miniAppUrl) return Markup.keyboard([['/rates', '/exchange']]).resize();
+  return Markup.keyboard([
+    [Markup.button.webApp('Exchange', miniAppUrl)],
+    ['/rates', '/alert'],
+  ]).resize();
 }
 
 bot.catch((err, ctx) => {

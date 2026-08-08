@@ -6,6 +6,7 @@
 <title>EXMONEY — обмен крипто и валюты в Молдове</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
     --bg:#14161B; --panel:#1E222A; --panel-2:#22262F; --bezel:#0C0D10;
@@ -105,6 +106,7 @@
   .calc-msg{font-size:13px;margin-top:12px;}
   .calc-msg.error{color:var(--red);}
   .calc-msg.ok{color:var(--green);}
+  .mini-app-note{display:none;color:var(--green);font-size:12.5px;margin-top:8px;}
 
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;}
@@ -145,6 +147,21 @@
     .calc-actions{grid-template-columns:1fr;}
   }
   @media (prefers-reduced-motion: reduce){ .eyebrow::before{animation:none !important;} }
+
+  body.tg-mini-app{background:var(--bg);padding-bottom:16px;}
+  body.tg-mini-app nav .nav-links,
+  body.tg-mini-app .hero-copy,
+  body.tg-mini-app #how,
+  body.tg-mini-app #trust,
+  body.tg-mini-app .final,
+  body.tg-mini-app footer{display:none;}
+  body.tg-mini-app nav{position:static;}
+  body.tg-mini-app .hero{padding:18px 0;}
+  body.tg-mini-app .hero-grid{display:block;}
+  body.tg-mini-app .board-frame{margin-top:18px;}
+  body.tg-mini-app .calc{box-shadow:none;}
+  body.tg-mini-app .field.contact{display:none;}
+  body.tg-mini-app .mini-app-note{display:block;}
 </style>
 </head>
 <body>
@@ -226,6 +243,7 @@
           <label data-i18n="calc.contactLabel">Telegram-юзернейм или e-mail (необязательно)</label>
           <input type="text" id="contact" data-i18n-placeholder="calc.contactPlaceholder" placeholder="@username или email">
         </div>
+        <div class="mini-app-note" id="miniAppNote"></div>
 
         <div class="calc-actions">
           <button class="btn-secondary" id="calcBtn" data-i18n="calc.calcBtn">Рассчитать</button>
@@ -316,6 +334,15 @@
 <script>
 const API = '';
 let CSRF_TOKEN = '';
+const TG = window.Telegram?.WebApp || null;
+const IS_TG_MINI_APP = Boolean(TG?.initData);
+
+if (IS_TG_MINI_APP) {
+  document.body.classList.add('tg-mini-app');
+  TG.ready();
+  TG.expand();
+}
+
 fetch(API + '/api/csrf-token').then(r => r.json()).then(d => { CSRF_TOKEN = d.csrfToken; }).catch(() => {});
 
 // ---- Мультиязычность RU/RO ----
@@ -458,8 +485,35 @@ const calcBtn = document.getElementById('calcBtn');
 const orderBtn = document.getElementById('orderBtn');
 const swapBtn = document.getElementById('swapBtn');
 const contact = document.getElementById('contact');
+const miniAppNote = document.getElementById('miniAppNote');
 
 let lastQuote = null;
+let miniAppAuthReady = !IS_TG_MINI_APP;
+let miniAppAuthError = '';
+
+async function authenticateMiniApp(){
+  if(!IS_TG_MINI_APP) return;
+  miniAppAuthReady = false;
+  miniAppAuthError = '';
+  try{
+    const res = await fetch(API + '/api/auth/telegram-webapp', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ initData: TG.initData })
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Telegram auth failed');
+    const user = data.user || {};
+    const display = user.username ? '@' + user.username : (user.firstName || 'Telegram');
+    contact.value = display;
+    miniAppNote.textContent = 'Telegram: ' + display;
+    miniAppAuthReady = true;
+  }catch(err){
+    miniAppAuthError = err.message;
+    miniAppNote.textContent = 'Telegram auth error: ' + err.message;
+    miniAppNote.style.color = 'var(--red)';
+  }
+}
 
 function syncLabel(){ amountLabel.textContent = I18N[window.CURRENT_LANG]['calc.amountLabel'] + ' (' + fromAsset.value + ')'; }
 fromAsset.addEventListener('change', syncLabel);
@@ -508,6 +562,10 @@ orderBtn.addEventListener('click', async ()=>{
   orderBtn.disabled = true; orderBtn.textContent = L['calc.orderBtnLoading'];
   calcMsg.textContent=''; calcMsg.className='calc-msg';
   try{
+    if(IS_TG_MINI_APP && !miniAppAuthReady){
+      if(!miniAppAuthError) await authenticateMiniApp();
+      if(!miniAppAuthReady) throw new Error(miniAppAuthError || 'Telegram auth failed');
+    }
     if(!CSRF_TOKEN){
       const tokenRes = await fetch(API + '/api/csrf-token');
       CSRF_TOKEN = (await tokenRes.json()).csrfToken;
@@ -522,10 +580,17 @@ orderBtn.addEventListener('click', async ()=>{
     });
     const data = await res.json();
     if(!res.ok) throw new Error(data.error || 'Не удалось создать заявку');
-    calcMsg.innerHTML = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>`;
+    if(IS_TG_MINI_APP){
+      calcMsg.innerHTML = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>`;
+      TG.HapticFeedback?.notificationOccurred?.('success');
+      if(data.telegramDeepLink) TG.openTelegramLink(data.telegramDeepLink);
+    }else{
+      calcMsg.innerHTML = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>`;
+    }
     calcMsg.className = 'calc-msg ok';
   }catch(err){
     calcMsg.textContent = err.message; calcMsg.className='calc-msg error';
+    TG?.HapticFeedback?.notificationOccurred?.('error');
   }finally{
     orderBtn.textContent = L['calc.orderBtn'];
     orderBtn.disabled = false;
@@ -533,6 +598,7 @@ orderBtn.addEventListener('click', async ()=>{
 });
 
 // Первичное применение языка — в самом конце, когда все элементы калькулятора уже объявлены
+authenticateMiniApp();
 applyLang(localStorage.getItem('nx_lang') || 'ru');
 </script>
 

@@ -37,6 +37,8 @@ ensureBootstrapAdmin(process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD_HASH
 );
 
 const app = express();
+const allowedCorsOrigin = process.env.CORS_ORIGIN || undefined;
+const secureCookies = process.env.COOKIE_SECURE === 'true' || process.env.NODE_ENV === 'production';
 
 // Если сервер стоит за nginx/Caddy — включите TRUST_PROXY=true в .env,
 // иначе rate limiting будет считать все запросы с одного IP (адреса прокси).
@@ -52,7 +54,7 @@ app.use(
     contentSecurityPolicy: false,
   })
 );
-app.use(cors());
+app.use(cors(allowedCorsOrigin ? { origin: allowedCorsOrigin, credentials: true } : undefined));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -60,7 +62,12 @@ app.use(
     secret: process.env.SESSION_SECRET || 'insecure-dev-secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 дней — сессией пользуются и клиенты кабинета
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: secureCookies,
+    }, // 30 дней — сессией пользуются и клиенты кабинета
   })
 );
 app.use(ensureCsrfToken);
