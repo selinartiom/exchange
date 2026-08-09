@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">EXMONEY logo</title>
+  <desc id="desc">EXMONEY wordmark with amber accent and dark background.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20242c"/>
+      <stop offset="1" stop-color="#14161b"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="360" rx="42" fill="#14161b"/>
+  <rect x="48" y="48" width="1104" height="264" rx="34" fill="url(#panel)" stroke="#333843" filter="url(#softShadow)"/>
+  <g transform="translate(112 96)">
+    <rect x="0" y="0" width="168" height="168" rx="32" fill="#0c0d10" stroke="#333843" stroke-width="4"/>
+    <path d="M45 55h76M45 84h54M45 113h76" stroke="#4dd9e8" stroke-width="16" stroke-linecap="round"/>
+    <path d="M112 45l28 39-28 39" fill="none" stroke="#ff9d2e" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="330" y="191" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="2" fill="#ece9e2">EX</text>
+  <text x="468" y="191" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="2" fill="#ff9d2e">MONEY</text>
+  <text x="336" y="238" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="600" letter-spacing="5" fill="#9a9da6">CRYPTO EXCHANGE</text>
+</svg>
