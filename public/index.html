@@ -190,14 +190,15 @@
     <div class="nav-links">
       <a href="#board" data-i18n="nav.rates">Курсы</a>
       <a href="#calc" data-i18n="nav.calc">Калькулятор</a>
-      <a href="#services">Услуги</a>
+      <a href="#services" data-i18n="nav.services">Услуги</a>
       <a href="#how" data-i18n="nav.how">Как это работает</a>
-      <a href="#contact">Контакты</a>
+      <a href="#contact" data-i18n="nav.contact">Контакты</a>
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
       <div class="lang-switch">
         <button class="lang-btn" data-lang="ru">RU</button>
         <button class="lang-btn" data-lang="ro">RO</button>
+        <button class="lang-btn" data-lang="en">EN</button>
       </div>
       <a href="#calc" class="cta-btn" data-i18n="nav.cta">Оформить заявку</a>
     </div>
@@ -316,39 +317,39 @@
 <section id="services">
   <div class="wrap">
     <div class="section-head">
-      <div class="kicker">Услуги обмена</div>
-      <h2>Покупка и продажа криптовалюты за MDL</h2>
-      <p>EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.</p>
+      <div class="kicker" data-i18n="services.kicker">Услуги обмена</div>
+      <h2 data-i18n="services.title">Покупка и продажа криптовалюты за MDL</h2>
+      <p data-i18n="services.sub">EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.</p>
     </div>
     <div class="service-list">
       <div class="service-item">
         <div class="tagline">MDL → CRYPTO</div>
-        <h3>Покупка криптовалюты</h3>
-        <p>Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.</p>
+        <h3 data-i18n="services.buy.title">Покупка криптовалюты</h3>
+        <p data-i18n="services.buy.text">Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.</p>
         <ul>
           <li>BTC, USDT, TON, CASA</li>
-          <li>Оплата по реквизитам оператора</li>
-          <li>Комиссия включена в отображаемый курс</li>
+          <li data-i18n="services.buy.li2">Оплата по реквизитам оператора</li>
+          <li data-i18n="services.buy.li3">Комиссия включена в отображаемый курс</li>
         </ul>
       </div>
       <div class="service-item">
         <div class="tagline">CRYPTO → MDL</div>
-        <h3>Продажа криптовалюты</h3>
-        <p>Клиент переводит криптовалюту и получает MDL после подтверждения сети.</p>
+        <h3 data-i18n="services.sell.title">Продажа криптовалюты</h3>
+        <p data-i18n="services.sell.text">Клиент переводит криптовалюту и получает MDL после подтверждения сети.</p>
         <ul>
-          <li>Выплата на карту или наличными по согласованию</li>
-          <li>Ручная проверка поступления средств</li>
-          <li>Курс фиксируется на время заявки</li>
+          <li data-i18n="services.sell.li1">Выплата на карту или наличными по согласованию</li>
+          <li data-i18n="services.sell.li2">Ручная проверка поступления средств</li>
+          <li data-i18n="services.sell.li3">Курс фиксируется на время заявки</li>
         </ul>
       </div>
       <div class="service-item">
         <div class="tagline">CRYPTO → CRYPTO</div>
-        <h3>Обмен между криптовалютами</h3>
-        <p>Обмен доступных активов между собой по актуальному курсу сервиса.</p>
+        <h3 data-i18n="services.swap.title">Обмен между криптовалютами</h3>
+        <p data-i18n="services.swap.text">Обмен доступных активов между собой по актуальному курсу сервиса.</p>
         <ul>
-          <li>Расчёт через онлайн-калькулятор</li>
-          <li>Поддержка заявок через Telegram</li>
-          <li>AML-проверка при необходимости</li>
+          <li data-i18n="services.swap.li1">Расчёт через онлайн-калькулятор</li>
+          <li data-i18n="services.swap.li2">Поддержка заявок через Telegram</li>
+          <li data-i18n="services.swap.li3">AML-проверка при необходимости</li>
         </ul>
       </div>
     </div>
@@ -388,21 +389,21 @@
 <section id="contact">
   <div class="wrap">
     <div class="section-head">
-      <div class="kicker">Контакты</div>
-      <h2>Связь с EXMONEY</h2>
-      <p>По вопросам обмена, статуса заявки, возврата или проверки платежа напишите оператору. Контакты указаны для клиентов и партнёров сервиса.</p>
+      <div class="kicker" data-i18n="contact.kicker">Контакты</div>
+      <h2 data-i18n="contact.title">Связь с EXMONEY</h2>
+      <p data-i18n="contact.sub">По вопросам обмена, статуса заявки, возврата или проверки платежа напишите оператору. Контакты указаны для клиентов и партнёров сервиса.</p>
     </div>
     <div class="contact-grid">
       <div class="contact-box">
-        <h3>Поддержка клиентов</h3>
-        <p>Telegram-бот: <a href="https://t.me/Obmenikmd_bot" target="_blank" rel="noopener">@Obmenikmd_bot</a></p>
+        <h3 data-i18n="contact.support.title">Поддержка клиентов</h3>
+        <p><span data-i18n="contact.telegram">Telegram-бот</span>: <a href="https://t.me/Obmenikmd_bot" target="_blank" rel="noopener">@Obmenikmd_bot</a></p>
         <p>E-mail: <a href="mailto:support@exmoney.online">support@exmoney.online</a></p>
       </div>
       <div class="contact-box">
-        <h3>Информация о сервисе</h3>
-        <p>Сайт: <a href="https://exmoney.online">exmoney.online</a></p>
-        <p>Рабочий регион: Кишинёв, Республика Молдова.</p>
-        <p>Правила сервиса, политика конфиденциальности и AML размещены в открытом доступе.</p>
+        <h3 data-i18n="contact.info.title">Информация о сервисе</h3>
+        <p><span data-i18n="contact.site">Сайт</span>: <a href="https://exmoney.online">exmoney.online</a></p>
+        <p data-i18n="contact.region">Рабочий регион: Кишинёв, Республика Молдова.</p>
+        <p data-i18n="contact.legal">Правила сервиса, политика конфиденциальности и AML размещены в открытом доступе.</p>
       </div>
     </div>
   </div>
@@ -420,8 +421,8 @@
   <div class="wrap">
     <p class="mono">EXMONEY · Кишинёв, Молдова</p>
     <div class="legal-links">
-      <a href="/terms.html">Пользовательское соглашение</a>
-      <a href="/privacy.html">Политика конфиденциальности</a>
+      <a href="/terms.html" data-i18n="footer.terms">Пользовательское соглашение</a>
+      <a href="/privacy.html" data-i18n="footer.privacy">Политика конфиденциальности</a>
       <a href="/aml.html">AML/KYC</a>
       <a href="mailto:support@exmoney.online">support@exmoney.online</a>
     </div>
@@ -443,10 +444,10 @@ if (IS_TG_MINI_APP) {
 
 fetch(API + '/api/csrf-token').then(r => r.json()).then(d => { CSRF_TOKEN = d.csrfToken; }).catch(() => {});
 
-// ---- Мультиязычность RU/RO ----
+// ---- Мультиязычность RU/RO/EN ----
 const I18N = {
   ru: {
-    'nav.rates': 'Курсы', 'nav.calc': 'Калькулятор', 'nav.how': 'Как это работает',
+    'nav.rates': 'Курсы', 'nav.calc': 'Калькулятор', 'nav.services': 'Услуги', 'nav.how': 'Как это работает', 'nav.contact': 'Контакты',
     'nav.cta': 'Оформить заявку',
     'hero.eyebrow': 'Табло обновляется каждые 60 секунд',
     'hero.title': 'Обмен крипты и валюты <em>в Кишинёве</em>, без очереди у кассы',
@@ -467,6 +468,14 @@ const I18N = {
     'calc.fixedFor': 'курс фиксируется на', 'calc.minutes': 'мин после оформления',
     'calc.errDiffCurrencies': 'Выберите разные валюты', 'calc.errAmount': 'Введите сумму больше нуля',
     'calc.orderCreated': 'Заявка', 'calc.orderCreatedSuffix': 'создана.', 'calc.openBot': 'Открыть бота для оплаты →',
+    'services.kicker': 'Услуги обмена', 'services.title': 'Покупка и продажа криптовалюты за MDL',
+    'services.sub': 'EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.',
+    'services.buy.title': 'Покупка криптовалюты', 'services.buy.text': 'Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.',
+    'services.buy.li2': 'Оплата по реквизитам оператора', 'services.buy.li3': 'Комиссия включена в отображаемый курс',
+    'services.sell.title': 'Продажа криптовалюты', 'services.sell.text': 'Клиент переводит криптовалюту и получает MDL после подтверждения сети.',
+    'services.sell.li1': 'Выплата на карту или наличными по согласованию', 'services.sell.li2': 'Ручная проверка поступления средств', 'services.sell.li3': 'Курс фиксируется на время заявки',
+    'services.swap.title': 'Обмен между криптовалютами', 'services.swap.text': 'Обмен доступных активов между собой по актуальному курсу сервиса.',
+    'services.swap.li1': 'Расчёт через онлайн-калькулятор', 'services.swap.li2': 'Поддержка заявок через Telegram', 'services.swap.li3': 'AML-проверка при необходимости',
     'how.kicker': 'Процесс', 'how.title': 'Четыре шага от заявки до получения средств',
     'how.sub': 'Расчёт — на сайте, оплата и подтверждение — в Telegram, без установки лишних приложений.',
     'how.step1.title': 'Рассчитать', 'how.step1.text': 'Указываете пару и сумму — сайт фиксирует курс на время в заявке.',
@@ -477,12 +486,19 @@ const I18N = {
     'trust.card1.title': 'Фиксация курса', 'trust.card1.text': 'Курс из калькулятора действует ограниченное время — сумма к получению не меняется, пока вы укладываетесь в лимит.',
     'trust.card2.title': 'Верификация по сумме', 'trust.card2.text': 'Небольшие обмены проходят без документов. Свыше лимита — базовая верификация, как того требует законодательство о ПОД/ФТ.',
     'trust.card3.title': 'Ручное подтверждение', 'trust.card3.text': 'Каждая заявка на MDL-направление проверяется оператором лично — это медленнее автоматики, зато безопаснее для обеих сторон.',
+    'contact.kicker': 'Контакты', 'contact.title': 'Связь с EXMONEY',
+    'contact.sub': 'По вопросам обмена, статуса заявки, возврата или проверки платежа напишите оператору. Контакты указаны для клиентов и партнёров сервиса.',
+    'contact.support.title': 'Поддержка клиентов', 'contact.telegram': 'Telegram-бот',
+    'contact.info.title': 'Информация о сервисе', 'contact.site': 'Сайт',
+    'contact.region': 'Рабочий регион: Кишинёв, Республика Молдова.',
+    'contact.legal': 'Правила сервиса, политика конфиденциальности и AML размещены в открытом доступе.',
     'final.title': 'Заявка занимает меньше двух минут', 'final.sub': 'Посчитайте обмен выше — дальше бот проведёт по оплате и подтверждению.',
     'final.cta': 'Рассчитать обмен →',
+    'footer.terms': 'Пользовательское соглашение', 'footer.privacy': 'Политика конфиденциальности',
     'footer.disclaimer': 'Курсы информационные, не являются публичной офертой. Точная сумма фиксируется при оформлении заявки.',
   },
   ro: {
-    'nav.rates': 'Cursuri', 'nav.calc': 'Calculator', 'nav.how': 'Cum funcționează',
+    'nav.rates': 'Cursuri', 'nav.calc': 'Calculator', 'nav.services': 'Servicii', 'nav.how': 'Cum funcționează', 'nav.contact': 'Contacte',
     'nav.cta': 'Trimite cerere',
     'hero.eyebrow': 'Tabela se actualizează la fiecare 60 de secunde',
     'hero.title': 'Schimb valutar și crypto <em>în Chișinău</em>, fără coadă la casă',
@@ -503,6 +519,14 @@ const I18N = {
     'calc.fixedFor': 'cursul este fixat pentru', 'calc.minutes': 'min după creare',
     'calc.errDiffCurrencies': 'Alegeți valute diferite', 'calc.errAmount': 'Introduceți o sumă mai mare de zero',
     'calc.orderCreated': 'Cererea', 'calc.orderCreatedSuffix': 'a fost creată.', 'calc.openBot': 'Deschide botul pentru plată →',
+    'services.kicker': 'Servicii de schimb', 'services.title': 'Cumpărare și vânzare de criptomonede pentru MDL',
+    'services.sub': 'EXMONEY primește cereri de schimb pentru BTC, USDT, TON și CASA cu calcul în lei moldovenești. Suma finală se fixează după calcularea cererii, iar datele de plată și confirmarea sunt transmise prin botul Telegram.',
+    'services.buy.title': 'Cumpărare crypto', 'services.buy.text': 'Clientul achită în MDL și primește criptomoneda aleasă în portofelul său.',
+    'services.buy.li2': 'Plată conform datelor oferite de operator', 'services.buy.li3': 'Comisionul este inclus în cursul afișat',
+    'services.sell.title': 'Vânzare crypto', 'services.sell.text': 'Clientul trimite criptomoneda și primește MDL după confirmarea rețelei.',
+    'services.sell.li1': 'Plată pe card sau cash prin acord', 'services.sell.li2': 'Verificare manuală a primirii fondurilor', 'services.sell.li3': 'Cursul se fixează pe durata cererii',
+    'services.swap.title': 'Schimb între criptomonede', 'services.swap.text': 'Schimbul activelor disponibile între ele la cursul actual al serviciului.',
+    'services.swap.li1': 'Calcul prin calculatorul online', 'services.swap.li2': 'Suport pentru cereri prin Telegram', 'services.swap.li3': 'Verificare AML dacă este necesar',
     'how.kicker': 'Proces', 'how.title': 'Patru pași de la cerere până la primirea sumei',
     'how.sub': 'Calculul — pe site, plata și confirmarea — în Telegram, fără aplicații suplimentare.',
     'how.step1.title': 'Calculează', 'how.step1.text': 'Indicați perechea și suma — site-ul fixează cursul pentru durata cererii.',
@@ -513,9 +537,67 @@ const I18N = {
     'trust.card1.title': 'Curs fixat', 'trust.card1.text': 'Cursul din calculator este valabil un timp limitat — suma de primit nu se schimbă cât timp vă încadrați în termen.',
     'trust.card2.title': 'Verificare după sumă', 'trust.card2.text': 'Schimburile mici se procesează fără documente. Peste limită — verificare de bază, conform legislației privind prevenirea spălării banilor.',
     'trust.card3.title': 'Confirmare manuală', 'trust.card3.text': 'Fiecare cerere pe direcția MDL este verificată personal de operator — mai lent decât automatizarea, dar mai sigur pentru ambele părți.',
+    'contact.kicker': 'Contacte', 'contact.title': 'Contact EXMONEY',
+    'contact.sub': 'Pentru întrebări despre schimb, statutul cererii, retur sau verificarea plății, scrieți operatorului. Contactele sunt indicate pentru clienții și partenerii serviciului.',
+    'contact.support.title': 'Suport clienți', 'contact.telegram': 'Bot Telegram',
+    'contact.info.title': 'Informații despre serviciu', 'contact.site': 'Site',
+    'contact.region': 'Regiune de lucru: Chișinău, Republica Moldova.',
+    'contact.legal': 'Regulile serviciului, politica de confidențialitate și AML sunt publicate deschis.',
     'final.title': 'Cererea durează mai puțin de două minute', 'final.sub': 'Calculați schimbul mai sus — apoi botul vă ghidează prin plată și confirmare.',
     'final.cta': 'Calculează schimbul →',
+    'footer.terms': 'Acordul utilizatorului', 'footer.privacy': 'Politica de confidențialitate',
     'footer.disclaimer': 'Cursurile sunt informative și nu constituie ofertă publică. Suma exactă se fixează la crearea cererii.',
+  },
+  en: {
+    'nav.rates': 'Rates', 'nav.calc': 'Calculator', 'nav.services': 'Services', 'nav.how': 'How it works', 'nav.contact': 'Contacts',
+    'nav.cta': 'Create order',
+    'hero.eyebrow': 'The rate board updates every 60 seconds',
+    'hero.title': 'Crypto and currency exchange <em>in Chisinau</em>, without waiting in line',
+    'hero.sub': 'Bitcoin, USDT, TON, CASA and Moldovan leu at live rates. Calculate your order on the website, then complete payment and confirmation in Telegram.',
+    'hero.ctaMain': 'Calculate exchange', 'hero.ctaSecondary': 'How it works',
+    'hero.stat1': 'rate board refresh', 'hero.stat2': 'rate lock', 'hero.stat3': 'card, cash, crypto',
+    'board.label': 'Rate board · EXMONEY', 'board.pair': 'Pair', 'board.buy': 'Buy',
+    'board.sell': 'Sell', 'board.status': 'Status', 'board.loading': 'loading rates...',
+    'board.updated': 'updated', 'board.error': 'rates are temporarily unavailable, please refresh the page',
+    'calc.kicker': 'Calculator', 'calc.title': 'Calculate an exchange and create an order',
+    'calc.sub': 'The rate is locked for the time shown below. After calculation, the order goes to an operator and you receive a bot link for payment.',
+    'calc.subShort': 'The rate is locked after calculation, and the order goes to an operator.',
+    'calc.give': 'You send', 'calc.get': 'You receive', 'calc.amountLabel': 'Amount',
+    'calc.amountPlaceholder': 'For example: 150', 'calc.resultEmpty': 'Enter an amount and click "Calculate"',
+    'calc.contactLabel': 'Telegram username or e-mail (optional)', 'calc.contactPlaceholder': '@username or email',
+    'calc.calcBtn': 'Calculate', 'calc.calcBtnLoading': 'Calculating...',
+    'calc.orderBtn': 'Create order', 'calc.orderBtnLoading': 'Creating...',
+    'calc.fixedFor': 'rate is locked for', 'calc.minutes': 'min after order creation',
+    'calc.errDiffCurrencies': 'Choose different currencies', 'calc.errAmount': 'Enter an amount greater than zero',
+    'calc.orderCreated': 'Order', 'calc.orderCreatedSuffix': 'has been created.', 'calc.openBot': 'Open bot for payment →',
+    'services.kicker': 'Exchange services', 'services.title': 'Buy and sell cryptocurrency for MDL',
+    'services.sub': 'EXMONEY accepts exchange orders for BTC, USDT, TON and CASA with settlement in Moldovan lei. The final amount is locked after order calculation, while payment details and confirmation are handled through the Telegram bot.',
+    'services.buy.title': 'Buy cryptocurrency', 'services.buy.text': 'The client pays in MDL and receives the selected cryptocurrency to their wallet.',
+    'services.buy.li2': 'Payment using operator-provided details', 'services.buy.li3': 'The fee is included in the displayed rate',
+    'services.sell.title': 'Sell cryptocurrency', 'services.sell.text': 'The client transfers cryptocurrency and receives MDL after network confirmation.',
+    'services.sell.li1': 'Payout to card or cash by agreement', 'services.sell.li2': 'Manual confirmation of incoming funds', 'services.sell.li3': 'The rate is locked for the order period',
+    'services.swap.title': 'Crypto-to-crypto exchange', 'services.swap.text': 'Exchange supported assets with each other at the current service rate.',
+    'services.swap.li1': 'Calculation through the online calculator', 'services.swap.li2': 'Order support through Telegram', 'services.swap.li3': 'AML check when required',
+    'how.kicker': 'Process', 'how.title': 'Four steps from order to receiving funds',
+    'how.sub': 'Calculation happens on the website, payment and confirmation happen in Telegram, without installing extra apps.',
+    'how.step1.title': 'Calculate', 'how.step1.text': 'Choose the pair and amount, and the website locks the rate for the order period.',
+    'how.step2.title': 'Open the bot', 'how.step2.text': 'The order link opens the bot with payment details right away.',
+    'how.step3.title': 'Send funds', 'how.step3.text': 'Transfer crypto or money, and the operator confirms receipt.',
+    'how.step4.title': 'Receive exchange', 'how.step4.text': 'The counter amount is sent to your card, in cash, or to your wallet.',
+    'trust.kicker': 'Terms', 'trust.title': 'Clear rules, no hidden fees',
+    'trust.card1.title': 'Rate lock', 'trust.card1.text': 'The calculator rate is valid for a limited time, so the amount to receive does not change while you stay within the limit.',
+    'trust.card2.title': 'Verification by amount', 'trust.card2.text': 'Small exchanges are processed without documents. Above the limit, basic verification may be required under AML/CFT rules.',
+    'trust.card3.title': 'Manual confirmation', 'trust.card3.text': 'Every MDL order is checked personally by an operator. It is slower than full automation, but safer for both sides.',
+    'contact.kicker': 'Contacts', 'contact.title': 'Contact EXMONEY',
+    'contact.sub': 'For questions about an exchange, order status, refund or payment check, contact the operator. These contacts are provided for clients and partners.',
+    'contact.support.title': 'Client support', 'contact.telegram': 'Telegram bot',
+    'contact.info.title': 'Service information', 'contact.site': 'Website',
+    'contact.region': 'Operating region: Chisinau, Republic of Moldova.',
+    'contact.legal': 'Service terms, privacy policy and AML policy are publicly available.',
+    'final.title': 'Creating an order takes less than two minutes', 'final.sub': 'Calculate the exchange above, then the bot will guide you through payment and confirmation.',
+    'final.cta': 'Calculate exchange →',
+    'footer.terms': 'Terms of Service', 'footer.privacy': 'Privacy Policy',
+    'footer.disclaimer': 'Rates are informational and do not constitute a public offer. The exact amount is locked when an order is created.',
   },
 };
 window.CURRENT_LANG = localStorage.getItem('nx_lang') || 'ru';
