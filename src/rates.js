@@ -7,6 +7,13 @@ const COINGECKO_IDS = {
   TON: 'the-open-network',
 };
 
+const GECKOTERMINAL_POOLS = {
+  CASA: {
+    network: 'ton',
+    pool: 'EQAaF1nQDRwGpa8-gX2JgRXpKxjSdq28vmwgAjKEzNC5pswn',
+  },
+};
+
 let cache = { at: 0, board: null };
 const CACHE_MS = 30_000; // не долбим внешние API чаще раза в 30 секунд
 
@@ -46,16 +53,31 @@ async function getCryptoUsdPrices(symbols) {
   return out;
 }
 
+async function getGeckoTerminalUsdPrice(symbol) {
+  const cfg = GECKOTERMINAL_POOLS[symbol];
+  if (!cfg) throw new Error(`Нет GeckoTerminal pool для ${symbol}`);
+
+  const { data } = await axios.get(
+    `https://api.geckoterminal.com/api/v2/networks/${cfg.network}/pools/${cfg.pool}`,
+    { timeout: 8000 }
+  );
+  const price = Number(data?.data?.attributes?.base_token_price_usd);
+  if (!(price > 0)) throw new Error(`Нет цены для ${symbol}`);
+  return price;
+}
+
 async function getBoardRates({ fresh = false } = {}) {
   if (!fresh && cache.board && Date.now() - cache.at < CACHE_MS) {
     return cache.board;
   }
 
   const margin = (await getSettings()).marginPercent / 100;
-  const [usdMdl, cryptoUsd] = await Promise.all([
+  const [usdMdl, listedCryptoUsd, casaUsd] = await Promise.all([
     getUsdToMdl(),
     getCryptoUsdPrices(['BTC', 'USDT', 'TON']),
+    getGeckoTerminalUsdPrice('CASA'),
   ]);
+  const cryptoUsd = { ...listedCryptoUsd, CASA: casaUsd };
 
   const board = { usdMdl, updatedAt: new Date().toISOString(), assets: {} };
   for (const [symbol, usdPrice] of Object.entries(cryptoUsd)) {
@@ -123,4 +145,4 @@ async function quote({ fromAsset, toAsset, amount }) {
   return quoteFromBoard(board, { fromAsset, toAsset, amount });
 }
 
-module.exports = { getBoardRates, quote, quoteFromBoard, COINGECKO_IDS };
+module.exports = { getBoardRates, quote, quoteFromBoard, COINGECKO_IDS, GECKOTERMINAL_POOLS };

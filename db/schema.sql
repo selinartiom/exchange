@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS admins (
 CREATE TABLE IF NOT EXISTS price_alerts (
   id               SERIAL PRIMARY KEY,
   telegram_id      BIGINT NOT NULL,
-  asset            TEXT NOT NULL CHECK (asset IN ('BTC', 'USDT', 'TON')),
+  asset            TEXT NOT NULL CHECK (asset IN ('BTC', 'USDT', 'TON', 'CASA')),
   direction        TEXT NOT NULL CHECK (direction IN ('above', 'below')),
   target_price_mdl NUMERIC(20, 8) NOT NULL CHECK (target_price_mdl > 0),
   active           BOOLEAN NOT NULL DEFAULT true,
@@ -131,3 +131,13 @@ CREATE TABLE IF NOT EXISTS price_alerts (
 
 CREATE INDEX IF NOT EXISTS idx_price_alerts_active ON price_alerts(active) WHERE active = true;
 CREATE INDEX IF NOT EXISTS idx_price_alerts_telegram_id ON price_alerts(telegram_id);
+
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'price_alerts_asset_check') THEN
+    ALTER TABLE price_alerts DROP CONSTRAINT price_alerts_asset_check;
+  END IF;
+
+  ALTER TABLE price_alerts ADD CONSTRAINT price_alerts_asset_check
+    CHECK (asset IN ('BTC', 'USDT', 'TON', 'CASA'));
+END $$;

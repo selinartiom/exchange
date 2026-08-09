@@ -10,6 +10,7 @@ const board = {
     BTC: { mid: 2050000, buy: 2019250, sell: 2080750 }, // маржа 1.5%
     USDT: { mid: 17.5, buy: 17.2375, sell: 17.7625 },
     TON: { mid: 97, buy: 95.545, sell: 98.455 },
+    CASA: { mid: 19.5, buy: 19.2075, sell: 19.7925 },
   },
 };
 
@@ -24,6 +25,12 @@ describe('quoteFromBoard', () => {
     const q = quoteFromBoard(board, { fromAsset: 'USDT', toAsset: 'MDL', amount: 100 });
     assert.equal(q.rateUsed, board.assets.USDT.buy);
     assert.equal(q.amountOut, +(100 * board.assets.USDT.buy).toFixed(2));
+  });
+
+  test('CASA → MDL использует курс buy и умножает', () => {
+    const q = quoteFromBoard(board, { fromAsset: 'CASA', toAsset: 'MDL', amount: 10 });
+    assert.equal(q.rateUsed, board.assets.CASA.buy);
+    assert.equal(q.amountOut, +(10 * board.assets.CASA.buy).toFixed(2));
   });
 
   test('крипто → крипто идёт через MDL как мост (двойная маржа)', () => {

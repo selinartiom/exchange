@@ -190,7 +190,7 @@
       <div class="hero-copy">
         <div class="eyebrow" id="live-indicator" data-i18n="hero.eyebrow">Табло обновляется каждые 60 секунд</div>
         <h1 data-i18n-html="hero.title">Обмен крипты и валюты <em>в Кишинёве</em>, без очереди у кассы</h1>
-        <p class="sub" data-i18n="hero.sub">Bitcoin, USDT, TON и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.</p>
+        <p class="sub" data-i18n="hero.sub">Bitcoin, USDT, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.</p>
         <div class="hero-ctas">
           <a href="#calc" class="cta-btn" data-i18n="hero.ctaMain">Рассчитать обмен</a>
           <a href="#how" class="btn-secondary" data-i18n="hero.ctaSecondary">Как это работает</a>
@@ -218,6 +218,7 @@
               <option value="BTC">BTC</option>
               <option value="USDT" selected>USDT</option>
               <option value="TON">TON</option>
+              <option value="CASA">CASA</option>
             </select>
           </div>
           <button class="swap-btn" id="swapBtn" title="Поменять местами">⇄</button>
@@ -228,6 +229,7 @@
               <option value="BTC">BTC</option>
               <option value="USDT">USDT</option>
               <option value="TON">TON</option>
+              <option value="CASA">CASA</option>
             </select>
           </div>
         </div>
@@ -275,6 +277,12 @@
         </div>
         <div class="board-row" data-pair="TON">
           <div class="pair"><span class="tag crypto">CRYPTO</span>TON/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="CASA">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>CASA/MDL</div>
           <div class="rate buy mono">—</div>
           <div class="rate sell mono">—</div>
           <div class="chg mono">…</div>
@@ -351,7 +359,7 @@ const I18N = {
     'nav.cta': 'Оформить заявку',
     'hero.eyebrow': 'Табло обновляется каждые 60 секунд',
     'hero.title': 'Обмен крипты и валюты <em>в Кишинёве</em>, без очереди у кассы',
-    'hero.sub': 'Bitcoin, USDT, TON и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.',
+    'hero.sub': 'Bitcoin, USDT, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.',
     'hero.ctaMain': 'Рассчитать обмен', 'hero.ctaSecondary': 'Как это работает',
     'hero.stat1': 'обновление табло', 'hero.stat2': 'фиксация курса', 'hero.stat3': 'карта, наличные, крипто',
     'board.label': 'Табло курсов · EXMONEY', 'board.pair': 'Пара', 'board.buy': 'Покупка',
@@ -387,7 +395,7 @@ const I18N = {
     'nav.cta': 'Trimite cerere',
     'hero.eyebrow': 'Tabela se actualizează la fiecare 60 de secunde',
     'hero.title': 'Schimb valutar și crypto <em>în Chișinău</em>, fără coadă la casă',
-    'hero.sub': 'Bitcoin, USDT, TON și leul moldovenesc — la curs live. Cererea se calculează direct pe site, plata și confirmarea — în Telegram.',
+    'hero.sub': 'Bitcoin, USDT, TON, CASA și leul moldovenesc — la curs live. Cererea se calculează direct pe site, plata și confirmarea — în Telegram.',
     'hero.ctaMain': 'Calculează schimbul', 'hero.ctaSecondary': 'Cum funcționează',
     'hero.stat1': 'actualizare tabelă', 'hero.stat2': 'curs fixat', 'hero.stat3': 'card, cash, crypto',
     'board.label': 'Tabela cursurilor · EXMONEY', 'board.pair': 'Pereche', 'board.buy': 'Cumpărare',
