@@ -11,6 +11,7 @@ const GECKOTERMINAL_POOLS = {
   CASA: {
     network: 'ton',
     pool: 'EQAaF1nQDRwGpa8-gX2JgRXpKxjSdq28vmwgAjKEzNC5pswn',
+    tokenMaster: 'EQBWK_VVEBJWiIQIIXOckUVw0HdF24buJiNiiR0dUHEe2xs4',
   },
 };
 
