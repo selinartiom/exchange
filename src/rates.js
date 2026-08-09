@@ -11,19 +11,30 @@ let cache = { at: 0, board: null };
 const CACHE_MS = 30_000; // не долбим внешние API чаще раза в 30 секунд
 
 async function getUsdToMdl() {
-  const { data } = await axios.get('https://api.exchangerate.host/latest', {
-    params: { base: 'USD', symbols: 'MDL' },
+  const params = { currencies: 'MDL' };
+  if (process.env.EXCHANGERATE_HOST_API_KEY) {
+    params.access_key = process.env.EXCHANGERATE_HOST_API_KEY;
+  }
+
+  const { data } = await axios.get('https://api.exchangerate.host/live', {
+    params,
     timeout: 8000,
   });
-  const rate = data?.rates?.MDL;
+  const rate = data?.quotes?.USDMDL;
   if (!rate) throw new Error('Не удалось получить курс USD/MDL');
   return rate;
 }
 
 async function getCryptoUsdPrices(symbols) {
   const ids = symbols.map((s) => COINGECKO_IDS[s]).join(',');
+  const headers = {};
+  if (process.env.COINGECKO_API_KEY) {
+    headers['x-cg-demo-api-key'] = process.env.COINGECKO_API_KEY;
+  }
+
   const { data } = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
     params: { ids, vs_currencies: 'usd' },
+    headers,
     timeout: 8000,
   });
   const out = {};
