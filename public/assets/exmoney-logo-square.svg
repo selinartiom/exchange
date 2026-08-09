@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">EXMONEY square logo</title>
+  <desc id="desc">Square EXMONEY logo for merchant profiles.</desc>
+  <rect width="512" height="512" fill="#14161b"/>
+  <rect x="43" y="43" width="426" height="426" fill="#1e222a" stroke="#333843" stroke-width="4"/>
+  <rect x="157" y="86" width="198" height="198" fill="#0c0d10" stroke="#333843" stroke-width="4"/>
+  <path d="M205 148h84M205 184h60M205 220h84" stroke="#4dd9e8" stroke-width="18" stroke-linecap="round"/>
+  <path d="M288 134l34 50-34 50" fill="none" stroke="#ff9d2e" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="96" y="374" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="0" fill="#ece9e2">EX</text>
+  <text x="190" y="374" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="0" fill="#ff9d2e">MONEY</text>
+  <text x="156" y="417" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.5" fill="#9a9da6">CRYPTO EXCHANGE</text>
+</svg>
