@@ -114,6 +114,22 @@
   .card h3 .ic{width:8px;height:8px;border-radius:2px;background:var(--cyan);}
   .card p{font-size:13.5px;color:var(--ink-dim);}
 
+  .service-list{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .service-item{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;min-height:180px;}
+  .service-item .tagline{font-family:'Space Mono',monospace;font-size:10px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+  .service-item h3{font-size:17px;margin-bottom:10px;}
+  .service-item p{font-size:13.5px;color:var(--ink-dim);margin-bottom:12px;}
+  .service-item ul{padding-left:18px;color:var(--ink-dim);font-size:13px;}
+  .service-item li{margin:5px 0;}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .contact-box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;}
+  .contact-box h3{font-size:16px;margin-bottom:12px;}
+  .contact-box p{font-size:13.5px;color:var(--ink-dim);margin-bottom:10px;}
+  .contact-box a{color:var(--cyan);}
+  .legal-links{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;}
+  .legal-links a{color:var(--ink-dim);text-decoration:underline;text-underline-offset:3px;}
+  .legal-links a:hover{color:var(--ink);}
+
   .final{text-align:center;padding:90px 0;}
   .final h2{max-width:520px;margin:0 auto 16px;}
   .final p{color:var(--ink-dim);max-width:440px;margin:0 auto 30px;}
@@ -124,7 +140,7 @@
 
   @media(max-width:860px){
     .hero-grid{grid-template-columns:1fr;gap:28px;}
-    .steps,.grid-3{grid-template-columns:1fr 1fr;}
+    .steps,.grid-3,.service-list,.contact-grid{grid-template-columns:1fr 1fr;}
     .board-row{grid-template-columns:1.3fr 1fr 1fr;}
     .board-row .chg{display:none;}
     .board-row.head .chg{display:none;}
@@ -137,7 +153,7 @@
     nav .cta-btn{display:none;}
     .hero{padding-top:34px;}
     .hero-stats{grid-template-columns:1fr;}
-    .steps,.grid-3{grid-template-columns:1fr;}
+    .steps,.grid-3,.service-list,.contact-grid{grid-template-columns:1fr;}
     .nav-links{display:none;}
     .board-frame,.calc{padding:16px;}
     .board-row{grid-template-columns:1fr 1fr;gap:8px;padding:13px 10px;}
@@ -151,8 +167,10 @@
   body.tg-mini-app{background:var(--bg);padding-bottom:16px;}
   body.tg-mini-app nav .nav-links,
   body.tg-mini-app .hero-copy,
+  body.tg-mini-app #services,
   body.tg-mini-app #how,
   body.tg-mini-app #trust,
+  body.tg-mini-app #contact,
   body.tg-mini-app .final,
   body.tg-mini-app footer{display:none;}
   body.tg-mini-app nav{position:static;}
@@ -172,7 +190,9 @@
     <div class="nav-links">
       <a href="#board" data-i18n="nav.rates">Курсы</a>
       <a href="#calc" data-i18n="nav.calc">Калькулятор</a>
+      <a href="#services">Услуги</a>
       <a href="#how" data-i18n="nav.how">Как это работает</a>
+      <a href="#contact">Контакты</a>
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
       <div class="lang-switch">
@@ -293,6 +313,48 @@
   </div>
 </header>
 
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Услуги обмена</div>
+      <h2>Покупка и продажа криптовалюты за MDL</h2>
+      <p>EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.</p>
+    </div>
+    <div class="service-list">
+      <div class="service-item">
+        <div class="tagline">MDL → CRYPTO</div>
+        <h3>Покупка криптовалюты</h3>
+        <p>Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.</p>
+        <ul>
+          <li>BTC, USDT, TON, CASA</li>
+          <li>Оплата по реквизитам оператора</li>
+          <li>Комиссия включена в отображаемый курс</li>
+        </ul>
+      </div>
+      <div class="service-item">
+        <div class="tagline">CRYPTO → MDL</div>
+        <h3>Продажа криптовалюты</h3>
+        <p>Клиент переводит криптовалюту и получает MDL после подтверждения сети.</p>
+        <ul>
+          <li>Выплата на карту или наличными по согласованию</li>
+          <li>Ручная проверка поступления средств</li>
+          <li>Курс фиксируется на время заявки</li>
+        </ul>
+      </div>
+      <div class="service-item">
+        <div class="tagline">CRYPTO → CRYPTO</div>
+        <h3>Обмен между криптовалютами</h3>
+        <p>Обмен доступных активов между собой по актуальному курсу сервиса.</p>
+        <ul>
+          <li>Расчёт через онлайн-калькулятор</li>
+          <li>Поддержка заявок через Telegram</li>
+          <li>AML-проверка при необходимости</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="how">
   <div class="wrap">
     <div class="section-head">
@@ -323,6 +385,29 @@
   </div>
 </section>
 
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Контакты</div>
+      <h2>Связь с EXMONEY</h2>
+      <p>По вопросам обмена, статуса заявки, возврата или проверки платежа напишите оператору. Контакты указаны для клиентов и партнёров сервиса.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-box">
+        <h3>Поддержка клиентов</h3>
+        <p>Telegram-бот: <a href="https://t.me/Obmenikmd_bot" target="_blank" rel="noopener">@Obmenikmd_bot</a></p>
+        <p>E-mail: <a href="mailto:support@exmoney.online">support@exmoney.online</a></p>
+      </div>
+      <div class="contact-box">
+        <h3>Информация о сервисе</h3>
+        <p>Сайт: <a href="https://exmoney.online">exmoney.online</a></p>
+        <p>Рабочий регион: Кишинёв, Республика Молдова.</p>
+        <p>Правила сервиса, политика конфиденциальности и AML размещены в открытом доступе.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="final" id="start">
   <div class="wrap">
     <h2 data-i18n="final.title">Заявка занимает меньше двух минут</h2>
@@ -334,6 +419,12 @@
 <footer>
   <div class="wrap">
     <p class="mono">EXMONEY · Кишинёв, Молдова</p>
+    <div class="legal-links">
+      <a href="/terms.html">Пользовательское соглашение</a>
+      <a href="/privacy.html">Политика конфиденциальности</a>
+      <a href="/aml.html">AML/KYC</a>
+      <a href="mailto:support@exmoney.online">support@exmoney.online</a>
+    </div>
     <p data-i18n="footer.disclaimer">Курсы информационные, не являются публичной офертой. Точная сумма фиксируется при оформлении заявки.</p>
   </div>
 </footer>
