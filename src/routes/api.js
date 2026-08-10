@@ -50,7 +50,7 @@ router.get('/rates', readLimiter, async (req, res) => {
     const board = await getBoardRates();
     res.json(board);
   } catch (err) {
-    console.error(err);
+    console.error('Rates API failed:', err.message, err.response?.status ? `status=${err.response.status}` : '');
     res.status(502).json({ error: 'Не удалось получить курсы' });
   }
 });

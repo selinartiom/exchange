@@ -16,7 +16,16 @@ const GECKOTERMINAL_POOLS = {
 };
 
 let cache = { at: 0, board: null };
-const CACHE_MS = 30_000; // не долбим внешние API чаще раза в 30 секунд
+const CACHE_MS = 60_000; // не долбим внешние API чаще раза в минуту
+const STALE_CACHE_MS = 6 * 60 * 60 * 1000;
+
+function safeError(err) {
+  return {
+    message: err.message,
+    status: err.response?.status,
+    providerError: err.response?.data?.error?.type || err.response?.data?.['error-type'] || undefined,
+  };
+}
 
 async function getUsdToMdl() {
   const params = { currencies: 'MDL' };
@@ -24,13 +33,34 @@ async function getUsdToMdl() {
     params.access_key = process.env.EXCHANGERATE_HOST_API_KEY;
   }
 
-  const { data } = await axios.get('https://api.exchangerate.host/live', {
-    params,
-    timeout: 8000,
-  });
-  const rate = data?.quotes?.USDMDL;
-  if (!rate) throw new Error('Не удалось получить курс USD/MDL');
-  return rate;
+  const providers = [
+    async () => {
+      const { data } = await axios.get('https://api.exchangerate.host/live', {
+        params,
+        timeout: 8000,
+      });
+      return data?.quotes?.USDMDL;
+    },
+    async () => {
+      const { data } = await axios.get('https://open.er-api.com/v6/latest/USD', {
+        timeout: 8000,
+      });
+      return data?.rates?.MDL;
+    },
+  ];
+
+  const errors = [];
+  for (const provider of providers) {
+    try {
+      const rate = Number(await provider());
+      if (rate > 0) return rate;
+      errors.push({ message: 'empty USD/MDL rate' });
+    } catch (err) {
+      errors.push(safeError(err));
+    }
+  }
+  console.error('USD/MDL providers failed:', errors);
+  throw new Error('Не удалось получить курс USD/MDL');
 }
 
 async function getCryptoUsdPrices(symbols) {
@@ -72,26 +102,33 @@ async function getBoardRates({ fresh = false } = {}) {
     return cache.board;
   }
 
-  const margin = (await getSettings()).marginPercent / 100;
-  const [usdMdl, listedCryptoUsd, casaUsd] = await Promise.all([
-    getUsdToMdl(),
-    getCryptoUsdPrices(['BTC', 'USDT', 'TON']),
-    getGeckoTerminalUsdPrice('CASA'),
-  ]);
-  const cryptoUsd = { ...listedCryptoUsd, CASA: casaUsd };
+  try {
+    const margin = (await getSettings()).marginPercent / 100;
+    const [usdMdl, listedCryptoUsd, casaUsd] = await Promise.all([
+      getUsdToMdl(),
+      getCryptoUsdPrices(['BTC', 'USDT', 'TON']),
+      getGeckoTerminalUsdPrice('CASA'),
+    ]);
+    const cryptoUsd = { ...listedCryptoUsd, CASA: casaUsd };
 
-  const board = { usdMdl, updatedAt: new Date().toISOString(), assets: {} };
-  for (const [symbol, usdPrice] of Object.entries(cryptoUsd)) {
-    const midMdl = usdPrice * usdMdl;
-    board.assets[symbol] = {
-      mid: midMdl,
-      buy: midMdl * (1 - margin),
-      sell: midMdl * (1 + margin),
-    };
+    const board = { usdMdl, updatedAt: new Date().toISOString(), assets: {} };
+    for (const [symbol, usdPrice] of Object.entries(cryptoUsd)) {
+      const midMdl = usdPrice * usdMdl;
+      board.assets[symbol] = {
+        mid: midMdl,
+        buy: midMdl * (1 - margin),
+        sell: midMdl * (1 + margin),
+      };
+    }
+
+    cache = { at: Date.now(), board };
+    return board;
+  } catch (err) {
+    if (cache.board && Date.now() - cache.at < STALE_CACHE_MS) {
+      return { ...cache.board, stale: true, staleReason: err.message };
+    }
+    throw err;
   }
-
-  cache = { at: Date.now(), board };
-  return board;
 }
 
 /**
