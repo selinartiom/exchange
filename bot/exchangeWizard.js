@@ -163,7 +163,7 @@ const wizard = new Scenes.WizardScene(
         ``,
         await requisitesFor(order, settings),
         ``,
-        `После отправки средств нажмите «Я оплатил» — оператор подтвердит поступление и отправит ${toAsset}.`,
+        paymentFollowUpFor(order),
       ].join('\n'),
       Markup.inlineKeyboard([Markup.button.callback('Я оплатил', `paid:${order.id}`)])
     );
@@ -231,12 +231,15 @@ function nowPaymentsRequisitesFor(order) {
 
   if (order.paymentId) lines.push(`Payment ID: ${order.paymentId}`);
 
-  lines.push(
-    '',
-    'После оплаты статус обновится автоматически. Если нужно, нажмите «Я оплатил» — оператор проверит поступление.'
-  );
-
   return lines.join('\n');
+}
+
+function paymentFollowUpFor(order) {
+  if (order.paymentProvider === 'nowpayments') {
+    return 'После оплаты статус обновится автоматически. Если нужно, нажмите «Я оплатил» — оператор проверит поступление.';
+  }
+
+  return `После отправки средств нажмите «Я оплатил» — оператор подтвердит поступление и отправит ${order.toAsset}.`;
 }
 
 /**
@@ -252,7 +255,7 @@ async function presentExistingOrder(ctx, order) {
       ``,
       await requisitesFor(order, settings),
       ``,
-      `После отправки средств нажмите «Я оплатил» — оператор подтвердит поступление и отправит ${order.toAsset}.`,
+      paymentFollowUpFor(order),
     ].join('\n'),
     Markup.inlineKeyboard([Markup.button.callback('Я оплатил', `paid:${order.id}`)])
   );
