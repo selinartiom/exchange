@@ -1,7 +1,7 @@
 const { Scenes, Markup } = require('telegraf');
 const { createPriceAlert } = require('../src/db');
 
-const ASSETS = ['BTC', 'USDT', 'TON', 'CASA'];
+const ASSETS = ['BTC', 'ETH', 'LTC', 'TRX', 'BNB', 'SOL', 'USDT', 'USDC', 'DAI', 'TON', 'CASA'];
 
 const alertWizard = new Scenes.WizardScene(
   'alert-wizard',

@@ -211,7 +211,7 @@
       <div class="hero-copy">
         <div class="eyebrow" id="live-indicator" data-i18n="hero.eyebrow">Табло обновляется каждые 60 секунд</div>
         <h1 data-i18n-html="hero.title">Обмен крипты и валюты <em>в Кишинёве</em>, без очереди у кассы</h1>
-        <p class="sub" data-i18n="hero.sub">Bitcoin, USDT, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.</p>
+        <p class="sub" data-i18n="hero.sub">BTC, ETH, USDT, USDC, TRX, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.</p>
         <div class="hero-ctas">
           <a href="#calc" class="cta-btn" data-i18n="hero.ctaMain">Рассчитать обмен</a>
           <a href="#how" class="btn-secondary" data-i18n="hero.ctaSecondary">Как это работает</a>
@@ -237,7 +237,14 @@
             <select id="fromAsset">
               <option value="MDL">MDL</option>
               <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="LTC">LTC</option>
+              <option value="TRX">TRX</option>
+              <option value="BNB">BNB</option>
+              <option value="SOL">SOL</option>
               <option value="USDT" selected>USDT</option>
+              <option value="USDC">USDC</option>
+              <option value="DAI">DAI</option>
               <option value="TON">TON</option>
               <option value="CASA">CASA</option>
             </select>
@@ -248,7 +255,14 @@
             <select id="toAsset">
               <option value="MDL" selected>MDL</option>
               <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="LTC">LTC</option>
+              <option value="TRX">TRX</option>
+              <option value="BNB">BNB</option>
+              <option value="SOL">SOL</option>
               <option value="USDT">USDT</option>
+              <option value="USDC">USDC</option>
+              <option value="DAI">DAI</option>
               <option value="TON">TON</option>
               <option value="CASA">CASA</option>
             </select>
@@ -290,8 +304,50 @@
           <div class="rate sell mono">—</div>
           <div class="chg mono">…</div>
         </div>
+        <div class="board-row" data-pair="USDC">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>USDC/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="DAI">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>DAI/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
         <div class="board-row" data-pair="BTC">
           <div class="pair"><span class="tag crypto">CRYPTO</span>BTC/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="ETH">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>ETH/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="LTC">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>LTC/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="TRX">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>TRX/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="BNB">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>BNB/MDL</div>
+          <div class="rate buy mono">—</div>
+          <div class="rate sell mono">—</div>
+          <div class="chg mono">…</div>
+        </div>
+        <div class="board-row" data-pair="SOL">
+          <div class="pair"><span class="tag crypto">CRYPTO</span>SOL/MDL</div>
           <div class="rate buy mono">—</div>
           <div class="rate sell mono">—</div>
           <div class="chg mono">…</div>
@@ -319,7 +375,7 @@
     <div class="section-head">
       <div class="kicker" data-i18n="services.kicker">Услуги обмена</div>
       <h2 data-i18n="services.title">Покупка и продажа криптовалюты за MDL</h2>
-      <p data-i18n="services.sub">EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.</p>
+      <p data-i18n="services.sub">EXMONEY принимает заявки на обмен популярных криптовалют и стейблкоинов с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.</p>
     </div>
     <div class="service-list">
       <div class="service-item">
@@ -327,7 +383,7 @@
         <h3 data-i18n="services.buy.title">Покупка криптовалюты</h3>
         <p data-i18n="services.buy.text">Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.</p>
         <ul>
-          <li>BTC, USDT, TON, CASA</li>
+          <li>BTC, ETH, LTC, TRX, BNB, SOL, USDT, USDC, DAI, TON, CASA</li>
           <li data-i18n="services.buy.li2">Оплата по реквизитам оператора</li>
           <li data-i18n="services.buy.li3">Комиссия включена в отображаемый курс</li>
         </ul>
@@ -451,7 +507,7 @@ const I18N = {
     'nav.cta': 'Оформить заявку',
     'hero.eyebrow': 'Табло обновляется каждые 60 секунд',
     'hero.title': 'Обмен крипты и валюты <em>в Кишинёве</em>, без очереди у кассы',
-    'hero.sub': 'Bitcoin, USDT, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.',
+    'hero.sub': 'BTC, ETH, USDT, USDC, TRX, TON, CASA и молдавский лей — по живому курсу. Заявка считается прямо на сайте, оплата и подтверждение — в Telegram.',
     'hero.ctaMain': 'Рассчитать обмен', 'hero.ctaSecondary': 'Как это работает',
     'hero.stat1': 'обновление табло', 'hero.stat2': 'фиксация курса', 'hero.stat3': 'карта, наличные, крипто',
     'board.label': 'Табло курсов · EXMONEY', 'board.pair': 'Пара', 'board.buy': 'Покупка',
@@ -473,7 +529,7 @@ const I18N = {
     'payment.address': 'Адрес',
     'payment.note': 'После оплаты статус обновится автоматически. Если нужно, напишите оператору в Telegram.',
     'services.kicker': 'Услуги обмена', 'services.title': 'Покупка и продажа криптовалюты за MDL',
-    'services.sub': 'EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.',
+    'services.sub': 'EXMONEY принимает заявки на обмен популярных криптовалют и стейблкоинов с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.',
     'services.buy.title': 'Покупка криптовалюты', 'services.buy.text': 'Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.',
     'services.buy.li2': 'Оплата по реквизитам оператора', 'services.buy.li3': 'Комиссия включена в отображаемый курс',
     'services.sell.title': 'Продажа криптовалюты', 'services.sell.text': 'Клиент переводит криптовалюту и получает MDL после подтверждения сети.',
@@ -507,7 +563,7 @@ const I18N = {
     'nav.cta': 'Trimite cerere',
     'hero.eyebrow': 'Tabela se actualizează la fiecare 60 de secunde',
     'hero.title': 'Schimb valutar și crypto <em>în Chișinău</em>, fără coadă la casă',
-    'hero.sub': 'Bitcoin, USDT, TON, CASA și leul moldovenesc — la curs live. Cererea se calculează direct pe site, plata și confirmarea — în Telegram.',
+    'hero.sub': 'BTC, ETH, USDT, USDC, TRX, TON, CASA și leul moldovenesc — la curs live. Cererea se calculează direct pe site, plata și confirmarea — în Telegram.',
     'hero.ctaMain': 'Calculează schimbul', 'hero.ctaSecondary': 'Cum funcționează',
     'hero.stat1': 'actualizare tabelă', 'hero.stat2': 'curs fixat', 'hero.stat3': 'card, cash, crypto',
     'board.label': 'Tabela cursurilor · EXMONEY', 'board.pair': 'Pereche', 'board.buy': 'Cumpărare',
@@ -529,7 +585,7 @@ const I18N = {
     'payment.address': 'Adresă',
     'payment.note': 'După plată, statutul se va actualiza automat. Dacă este nevoie, scrieți operatorului în Telegram.',
     'services.kicker': 'Servicii de schimb', 'services.title': 'Cumpărare și vânzare de criptomonede pentru MDL',
-    'services.sub': 'EXMONEY primește cereri de schimb pentru BTC, USDT, TON și CASA cu calcul în lei moldovenești. Suma finală se fixează după calcularea cererii, iar datele de plată și confirmarea sunt transmise prin botul Telegram.',
+    'services.sub': 'EXMONEY primește cereri de schimb pentru criptomonede și stablecoin-uri populare cu calcul în lei moldovenești. Suma finală se fixează după calcularea cererii, iar datele de plată și confirmarea sunt transmise prin botul Telegram.',
     'services.buy.title': 'Cumpărare crypto', 'services.buy.text': 'Clientul achită în MDL și primește criptomoneda aleasă în portofelul său.',
     'services.buy.li2': 'Plată conform datelor oferite de operator', 'services.buy.li3': 'Comisionul este inclus în cursul afișat',
     'services.sell.title': 'Vânzare crypto', 'services.sell.text': 'Clientul trimite criptomoneda și primește MDL după confirmarea rețelei.',
@@ -563,7 +619,7 @@ const I18N = {
     'nav.cta': 'Create order',
     'hero.eyebrow': 'The rate board updates every 60 seconds',
     'hero.title': 'Crypto and currency exchange <em>in Chisinau</em>, without waiting in line',
-    'hero.sub': 'Bitcoin, USDT, TON, CASA and Moldovan leu at live rates. Calculate your order on the website, then complete payment and confirmation in Telegram.',
+    'hero.sub': 'BTC, ETH, USDT, USDC, TRX, TON, CASA and Moldovan leu at live rates. Calculate your order on the website, then complete payment and confirmation in Telegram.',
     'hero.ctaMain': 'Calculate exchange', 'hero.ctaSecondary': 'How it works',
     'hero.stat1': 'rate board refresh', 'hero.stat2': 'rate lock', 'hero.stat3': 'card, cash, crypto',
     'board.label': 'Rate board · EXMONEY', 'board.pair': 'Pair', 'board.buy': 'Buy',
@@ -585,7 +641,7 @@ const I18N = {
     'payment.address': 'Address',
     'payment.note': 'After payment, the status will update automatically. If needed, contact the operator in Telegram.',
     'services.kicker': 'Exchange services', 'services.title': 'Buy and sell cryptocurrency for MDL',
-    'services.sub': 'EXMONEY accepts exchange orders for BTC, USDT, TON and CASA with settlement in Moldovan lei. The final amount is locked after order calculation, while payment details and confirmation are handled through the Telegram bot.',
+    'services.sub': 'EXMONEY accepts exchange orders for popular cryptocurrencies and stablecoins with settlement in Moldovan lei. The final amount is locked after order calculation, while payment details and confirmation are handled through the Telegram bot.',
     'services.buy.title': 'Buy cryptocurrency', 'services.buy.text': 'The client pays in MDL and receives the selected cryptocurrency to their wallet.',
     'services.buy.li2': 'Payment using operator-provided details', 'services.buy.li3': 'The fee is included in the displayed rate',
     'services.sell.title': 'Sell cryptocurrency', 'services.sell.text': 'The client transfers cryptocurrency and receives MDL after network confirmation.',

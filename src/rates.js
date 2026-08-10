@@ -3,7 +3,14 @@ const { getSettings } = require('./db');
 
 const COINGECKO_IDS = {
   BTC: 'bitcoin',
+  ETH: 'ethereum',
+  LTC: 'litecoin',
+  TRX: 'tron',
+  BNB: 'binancecoin',
+  SOL: 'solana',
   USDT: 'tether',
+  USDC: 'usd-coin',
+  DAI: 'dai',
   TON: 'the-open-network',
 };
 
@@ -106,7 +113,7 @@ async function getBoardRates({ fresh = false } = {}) {
     const margin = (await getSettings()).marginPercent / 100;
     const [usdMdl, listedCryptoUsd, casaUsd] = await Promise.all([
       getUsdToMdl(),
-      getCryptoUsdPrices(['BTC', 'USDT', 'TON']),
+      getCryptoUsdPrices(Object.keys(COINGECKO_IDS)),
       getGeckoTerminalUsdPrice('CASA'),
     ]);
     const cryptoUsd = { ...listedCryptoUsd, CASA: casaUsd };

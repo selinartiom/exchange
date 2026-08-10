@@ -3,7 +3,7 @@ const { nanoid } = require('nanoid');
 const { quote } = require('../src/rates');
 const { createOrder, getSettings, findRecentDuplicateOrder, ensureBtcDepositAddress } = require('../src/db');
 
-const ASSETS = ['MDL', 'BTC', 'USDT', 'TON', 'CASA'];
+const ASSETS = ['MDL', 'BTC', 'ETH', 'LTC', 'TRX', 'BNB', 'SOL', 'USDT', 'USDC', 'DAI', 'TON', 'CASA'];
 
 const assetKeyboard = (excluded) =>
   Markup.inlineKeyboard(

@@ -6,9 +6,18 @@ const API_BASE = process.env.NOWPAYMENTS_API_BASE || 'https://api.nowpayments.io
 
 const CURRENCY_BY_ASSET = {
   BTC: process.env.NOWPAYMENTS_CURRENCY_BTC || 'btc',
+  ETH: process.env.NOWPAYMENTS_CURRENCY_ETH || 'eth',
+  LTC: process.env.NOWPAYMENTS_CURRENCY_LTC || 'ltc',
+  TRX: process.env.NOWPAYMENTS_CURRENCY_TRX || 'trx',
+  BNB: process.env.NOWPAYMENTS_CURRENCY_BNB || 'bnbbsc',
+  SOL: process.env.NOWPAYMENTS_CURRENCY_SOL || 'sol',
   USDT: process.env.NOWPAYMENTS_CURRENCY_USDT || 'usdttrc20',
+  USDC: process.env.NOWPAYMENTS_CURRENCY_USDC || 'usdc',
+  DAI: process.env.NOWPAYMENTS_CURRENCY_DAI || 'dai',
   TON: process.env.NOWPAYMENTS_CURRENCY_TON || 'ton',
 };
+
+const STABLE_ASSETS = new Set(['USDT', 'USDC', 'DAI']);
 
 function isConfigured() {
   return Boolean(process.env.NOWPAYMENTS_API_KEY);
@@ -28,7 +37,7 @@ function publicOrderUrl(orderId) {
 }
 
 async function estimateUsdAmount(order) {
-  if (order.fromAsset === 'USDT') return order.amountIn;
+  if (STABLE_ASSETS.has(order.fromAsset)) return order.amountIn;
   const board = await getBoardRates();
   const assetRate = board.assets?.[order.fromAsset]?.mid;
   if (!assetRate || !board.usdMdl) return order.amountIn;
