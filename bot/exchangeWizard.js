@@ -179,6 +179,9 @@ function needsKyc(fromAsset, toAsset, amount, result, noKycLimitEur) {
 }
 
 async function requisitesFor(order, settings) {
+  const providerRequisites = nowPaymentsRequisitesFor(order);
+  if (providerRequisites) return providerRequisites;
+
   const fromAsset = order.fromAsset;
 
   if (fromAsset === 'MDL') {
@@ -212,6 +215,28 @@ async function requisitesFor(order, settings) {
 
   // USDT на TON — джеттон, авто-детекции пока нет (см. blockchainWatcher.js), подтверждение вручную
   return `Отправьте ${fromAsset} на адрес:\n${settings.walletUsdtTon}`;
+}
+
+function nowPaymentsRequisitesFor(order) {
+  if (order.paymentProvider !== 'nowpayments' || !order.payAddress) return null;
+
+  const amount = order.payAmount || order.amountIn;
+  const currency = (order.payCurrency || order.fromAsset || '').toUpperCase();
+  const lines = [
+    'Оплата через NOWPayments',
+    '',
+    `Отправьте ${amount} ${currency} на адрес:`,
+    order.payAddress,
+  ];
+
+  if (order.paymentId) lines.push(`Payment ID: ${order.paymentId}`);
+
+  lines.push(
+    '',
+    'После оплаты статус обновится автоматически. Если нужно, нажмите «Я оплатил» — оператор проверит поступление.'
+  );
+
+  return lines.join('\n');
 }
 
 /**
