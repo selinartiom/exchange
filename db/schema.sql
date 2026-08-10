@@ -36,11 +36,23 @@ ALTER TABLE orders ADD COLUMN IF NOT EXISTS confirmations INTEGER NOT NULL DEFAU
 -- Внутренняя заметка оператора — не видна клиенту, для служебных пометок
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS internal_note TEXT DEFAULT '';
 
+-- Внешний платёжный провайдер (например NOWPayments): id платежа, адрес/сумма для оплаты и последний статус.
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_provider TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_id TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_url TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS pay_address TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS pay_amount NUMERIC(20, 8);
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS pay_currency TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_purchase_id TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_raw JSONB DEFAULT '{}'::jsonb;
+
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_orders_telegram_id ON orders(telegram_id);
 CREATE INDEX IF NOT EXISTS idx_orders_quote_expires_at ON orders(quote_expires_at) WHERE status = 'AWAITING_PAYMENT';
 CREATE INDEX IF NOT EXISTS idx_orders_deposit_address ON orders(deposit_address) WHERE deposit_address IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_orders_payment_id ON orders(payment_id) WHERE payment_id IS NOT NULL;
 
 DO $$
 BEGIN

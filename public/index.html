@@ -468,6 +468,10 @@ const I18N = {
     'calc.fixedFor': 'курс фиксируется на', 'calc.minutes': 'мин после оформления',
     'calc.errDiffCurrencies': 'Выберите разные валюты', 'calc.errAmount': 'Введите сумму больше нуля',
     'calc.orderCreated': 'Заявка', 'calc.orderCreatedSuffix': 'создана.', 'calc.openBot': 'Открыть бота для оплаты →',
+    'payment.title': 'Оплата через NOWPayments',
+    'payment.amount': 'Сумма к оплате',
+    'payment.address': 'Адрес',
+    'payment.note': 'После оплаты статус обновится автоматически. Если нужно, напишите оператору в Telegram.',
     'services.kicker': 'Услуги обмена', 'services.title': 'Покупка и продажа криптовалюты за MDL',
     'services.sub': 'EXMONEY принимает заявки на обмен BTC, USDT, TON и CASA с расчётом в молдавских леях. Итоговая сумма фиксируется после расчёта заявки, а реквизиты и подтверждение передаются через Telegram-бота.',
     'services.buy.title': 'Покупка криптовалюты', 'services.buy.text': 'Клиент оплачивает в MDL и получает выбранную криптовалюту на свой кошелёк.',
@@ -520,6 +524,10 @@ const I18N = {
     'calc.fixedFor': 'cursul este fixat pentru', 'calc.minutes': 'min după creare',
     'calc.errDiffCurrencies': 'Alegeți valute diferite', 'calc.errAmount': 'Introduceți o sumă mai mare de zero',
     'calc.orderCreated': 'Cererea', 'calc.orderCreatedSuffix': 'a fost creată.', 'calc.openBot': 'Deschide botul pentru plată →',
+    'payment.title': 'Plată prin NOWPayments',
+    'payment.amount': 'Suma de plată',
+    'payment.address': 'Adresă',
+    'payment.note': 'După plată, statutul se va actualiza automat. Dacă este nevoie, scrieți operatorului în Telegram.',
     'services.kicker': 'Servicii de schimb', 'services.title': 'Cumpărare și vânzare de criptomonede pentru MDL',
     'services.sub': 'EXMONEY primește cereri de schimb pentru BTC, USDT, TON și CASA cu calcul în lei moldovenești. Suma finală se fixează după calcularea cererii, iar datele de plată și confirmarea sunt transmise prin botul Telegram.',
     'services.buy.title': 'Cumpărare crypto', 'services.buy.text': 'Clientul achită în MDL și primește criptomoneda aleasă în portofelul său.',
@@ -572,6 +580,10 @@ const I18N = {
     'calc.fixedFor': 'rate is locked for', 'calc.minutes': 'min after order creation',
     'calc.errDiffCurrencies': 'Choose different currencies', 'calc.errAmount': 'Enter an amount greater than zero',
     'calc.orderCreated': 'Order', 'calc.orderCreatedSuffix': 'has been created.', 'calc.openBot': 'Open bot for payment →',
+    'payment.title': 'Payment via NOWPayments',
+    'payment.amount': 'Amount to pay',
+    'payment.address': 'Address',
+    'payment.note': 'After payment, the status will update automatically. If needed, contact the operator in Telegram.',
     'services.kicker': 'Exchange services', 'services.title': 'Buy and sell cryptocurrency for MDL',
     'services.sub': 'EXMONEY accepts exchange orders for BTC, USDT, TON and CASA with settlement in Moldovan lei. The final amount is locked after order calculation, while payment details and confirmation are handled through the Telegram bot.',
     'services.buy.title': 'Buy cryptocurrency', 'services.buy.text': 'The client pays in MDL and receives the selected cryptocurrency to their wallet.',
@@ -674,6 +686,21 @@ let lastQuote = null;
 let miniAppAuthReady = !IS_TG_MINI_APP;
 let miniAppAuthError = '';
 
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+  }[ch]));
+}
+
+function nowPaymentsHtml(payment){
+  if(!payment || !payment.payAddress) return '';
+  const amountText = payment.payAmount ? `${payment.payAmount} ${String(payment.payCurrency || '').toUpperCase()}` : String(payment.payCurrency || '').toUpperCase();
+  return `<br><span style="display:block;margin-top:10px;color:var(--ink)">${I18N[window.CURRENT_LANG]['payment.title']}</span>` +
+    `<span style="display:block;margin-top:4px">${I18N[window.CURRENT_LANG]['payment.amount']}: <b>${escapeHtml(amountText)}</b></span>` +
+    `<span style="display:block;margin-top:4px;word-break:break-all">${I18N[window.CURRENT_LANG]['payment.address']}: <b>${escapeHtml(payment.payAddress)}</b></span>` +
+    `<span style="display:block;margin-top:4px;color:var(--ink-dim)">${I18N[window.CURRENT_LANG]['payment.note']}</span>`;
+}
+
 async function authenticateMiniApp(){
   if(!IS_TG_MINI_APP) return;
   miniAppAuthReady = false;
@@ -763,12 +790,14 @@ orderBtn.addEventListener('click', async ()=>{
     });
     const data = await res.json();
     if(!res.ok) throw new Error(data.error || 'Не удалось создать заявку');
+    const paymentBlock = nowPaymentsHtml(data.nowPayments);
+    const orderMessage = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>${paymentBlock}`;
     if(IS_TG_MINI_APP){
-      calcMsg.innerHTML = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>`;
+      calcMsg.innerHTML = orderMessage;
       TG.HapticFeedback?.notificationOccurred?.('success');
       if(data.telegramDeepLink) TG.openTelegramLink(data.telegramDeepLink);
     }else{
-      calcMsg.innerHTML = `${L['calc.orderCreated']} #${data.order.id} ${L['calc.orderCreatedSuffix']} <a href="${data.telegramDeepLink}" target="_blank" style="color:var(--cyan);text-decoration:underline">${L['calc.openBot']}</a>`;
+      calcMsg.innerHTML = orderMessage;
     }
     calcMsg.className = 'calc-msg ok';
   }catch(err){

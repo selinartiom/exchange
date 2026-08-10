@@ -26,6 +26,15 @@ function mapOrder(row) {
     depositIndex: row.deposit_index,
     txHash: row.tx_hash,
     confirmations: row.confirmations,
+    paymentProvider: row.payment_provider,
+    paymentId: row.payment_id,
+    paymentStatus: row.payment_status,
+    paymentUrl: row.payment_url,
+    payAddress: row.pay_address,
+    payAmount: row.pay_amount !== null && row.pay_amount !== undefined ? parseFloat(row.pay_amount) : null,
+    payCurrency: row.pay_currency,
+    paymentPurchaseId: row.payment_purchase_id,
+    paymentRaw: row.payment_raw || {},
     confirmedBy: row.confirmed_by,
     confirmedAt: row.confirmed_at,
     rejectedBy: row.rejected_by,
@@ -113,6 +122,15 @@ async function updateOrder(id, patch) {
     confirmedAt: 'confirmed_at',
     rejectedBy: 'rejected_by',
     rejectedAt: 'rejected_at',
+    paymentProvider: 'payment_provider',
+    paymentId: 'payment_id',
+    paymentStatus: 'payment_status',
+    paymentUrl: 'payment_url',
+    payAddress: 'pay_address',
+    payAmount: 'pay_amount',
+    payCurrency: 'pay_currency',
+    paymentPurchaseId: 'payment_purchase_id',
+    paymentRaw: 'payment_raw',
   };
   const sets = [];
   const values = [];
@@ -129,6 +147,34 @@ async function updateOrder(id, patch) {
     `UPDATE orders SET ${sets.join(', ')} WHERE id = $${i} RETURNING *`,
     values
   );
+  return mapOrder(rows[0]);
+}
+
+async function attachPaymentToOrder(orderId, payment) {
+  const patch = {
+    paymentProvider: payment.provider,
+    paymentId: payment.paymentId,
+    paymentStatus: payment.paymentStatus,
+    paymentUrl: payment.paymentUrl,
+    payAddress: payment.payAddress,
+    payAmount: payment.payAmount,
+    payCurrency: payment.payCurrency,
+    paymentPurchaseId: payment.purchaseId,
+    paymentRaw: payment.raw || {},
+  };
+  const order = await updateOrder(orderId, patch);
+  await logEvent(orderId, 'PAYMENT_CREATED', payment.provider || 'payment', {
+    paymentId: payment.paymentId,
+    paymentStatus: payment.paymentStatus,
+    payAddress: payment.payAddress,
+    payAmount: payment.payAmount,
+    payCurrency: payment.payCurrency,
+  });
+  return order;
+}
+
+async function getOrderByPaymentId(paymentId) {
+  const { rows } = await pool.query('SELECT * FROM orders WHERE payment_id = $1', [String(paymentId)]);
   return mapOrder(rows[0]);
 }
 
@@ -487,7 +533,9 @@ async function cancelPriceAlert(id, telegramId) {
 
 module.exports = {
   createOrder,
+  attachPaymentToOrder,
   getOrder,
+  getOrderByPaymentId,
   updateOrder,
   listOrders,
   findRecentDuplicateOrder,
